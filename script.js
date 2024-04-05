@@ -1,22 +1,21 @@
 "use strict";
 
-// prettier-ignore
-
 class Workout {
   date = new Date();
   id = (Date.now() + "").slice(-10); // a fake method to create ids
-  
+
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng]
     this.distance = distance; //in km
     this.duration = duration; //in min
-      
   }
   _setDescription() {
     // prettier-ignore
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    
-    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
+
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
+      months[this.date.getMonth()]
+    } ${this.date.getDate()}`;
   }
 }
 
@@ -74,7 +73,13 @@ class App {
   #workouts = [];
 
   constructor() {
+    // Get user's position
     this._getPosition();
+
+    // Get data from local storage
+    this._getLocaleStorage();
+
+    // Attach event handlers
     form.addEventListener("submit", this._newWorkout.bind(this));
     inputType.addEventListener("change", this._toggleElevationField);
     containerWorkouts.addEventListener("click", this._moveToPopup.bind(this));
@@ -105,6 +110,10 @@ class App {
 
     // Handling clicks on map
     this.#map.on("click", this._showForm.bind(this));
+
+    this.#workouts.forEach((work) => {
+      this._renderWorkOutMarker(work);
+    });
   }
 
   _showForm(mapE) {
@@ -155,7 +164,6 @@ class App {
         return alert("Inputs have to be positive numbers!");
 
       workout = new Running([lat, lng], distance, duration, cadence);
-      this.#workouts.push(workout);
     }
 
     // If workout cycling, creating running object
@@ -172,7 +180,6 @@ class App {
     }
     // Add bew object to work out array
     this.#workouts.push(workout);
-    console.log(workout);
 
     // Render work out on map as marker
     this._renderWorkOutMarker(workout);
@@ -182,8 +189,10 @@ class App {
 
     //Hide form + Clear input fields
     this._hideForm();
-  }
 
+    // Set local storage
+    this._setLocalStorage();
+  }
   _renderWorkOutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
@@ -263,6 +272,23 @@ class App {
         duration: 1,
       },
     });
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem("workouts", JSON.stringify(this.#workouts));
+  }
+  _getLocaleStorage() {
+    const data = JSON.parse(localStorage.getItem("workouts"));
+    if (!data) return;
+    this.#workouts = data;
+    this.#workouts.forEach((work) => {
+      this._renderWorkOut(work);
+    });
+  }
+
+  reset() {
+    localStorage.removeItem("workouts");
+    location.reload();
   }
 }
 
