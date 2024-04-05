@@ -22,8 +22,9 @@ What I Learned:
 
 Feel free to:
 
-* Explore the code to see how JavaScript interacts with the HTML and CSS to create the game.
+* Explore the codebase to understand how JavaScript interacts with HTML, CSS, and Leaflet.js to create this application.
 
-* Experiment with the game logic and styling!
 
-* Ask any questions or share improvements for this Pig Dice Game implementation.
+
+
+
