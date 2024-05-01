@@ -8,7 +8,7 @@
 
 * Implement a clean and modular code structure for better maintainability.
 
-What I Learned:
+# What I Learned:
 
 * Web APIs: Gain practical experience with Geolocation API to get user location and Local Storage API to store data persistently.
 
@@ -20,7 +20,7 @@ What I Learned:
 
 * Modularization: Discover how to break down the code into well-defined functions and classes for improved organization and reusability.
 
-Feel free to:
+# Feel free to:
 
 * Explore the codebase to understand how JavaScript interacts with HTML, CSS, and Leaflet.js to create this application.
 
